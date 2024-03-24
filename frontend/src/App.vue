@@ -5,20 +5,16 @@
 </template>
 
 <script>
-import { mapActions, } from 'vuex';
+import { mapActions } from 'vuex';
 
 export default {
-    name: "App",
-    components: {
-    },
-    methods: {
-      ...mapActions(['getUserInfo']),
-    },
-    computed: {
-
-    },
-    created() {
-        this.getUserInfo()
-    }
+  name: "App",
+  components: {},
+  methods: {
+    ...mapActions(['getUserInfo']),
+  },
+  created() {
+    this.getUserInfo();
+  }
 }
 </script>

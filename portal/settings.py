@@ -1,33 +1,18 @@
 import os
 import environ
 from pathlib import Path
+from dotenv import load_dotenv
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
 
-"""
-INITIATING ENVIRONMENTAL VARIABLES
-"""
-
-env = environ.Env(DEBUG=(bool, False))
+env = environ.Env(DEBUG=(bool, True))
 environ.Env.read_env()
 
+load_dotenv()
+SECRET_KEY = os.environ.get('SECRET_KEY')
+DEBUG = True
 
-"""
-DEBUG & SECRET KEY
-"""
-
-if "SECRET_KEY" in os.environ:
-    SECRET_KEY = env("SECRET_KEY")
-    DEBUG = env("DEBUG")
-
-else:
-    SECRET_KEY = "testing_ci"
-    DEBUG = True
-
-ALLOWED_HOSTS = ["*"]
-
-
-# Application definition
+ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -38,40 +23,34 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django.contrib.sites",
     "django_filters",
-
     # CORS
     "corsheaders",
-    "storages",
-
     # REST FRAMEWORK
     "rest_framework",
     "rest_framework.authtoken",
-
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
     "dj_rest_auth.registration",
-
     "webpack_loader",
-
     "charity",
     "core",
-    'projects',
+    "projects",
     "user"
 ]
-
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
-    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",  # Corrected import
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "corsheaders.middleware.CorsMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
 ]
-
+                    
 ROOT_URLCONF = 'portal.urls'
 
 TEMPLATES = [
@@ -90,22 +69,14 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'portal.wsgi.application'
-
-
-# Database
-# https://docs.djangoproject.com/en/3.2/ref/settings/#databases
+# WSGI_APPLICATION = 'portal.wsgi.application'
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
-
-# Password validation
-# https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -122,21 +93,16 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
-# LOCALIZATION
 LANGUAGE_CODE = "en-us"
 TIME_ZONE = "UTC"
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-
-# AUTHENTICATION
 AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
     "allauth.account.auth_backends.AuthenticationBackend",
 ]
-
 
 SITE_ID = 1
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
@@ -152,22 +118,20 @@ ACCOUNT_ADAPTER = "portal.account_adapter.UserAccountAdapter"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
 # STATIC & MEDIA
 STATIC_URL = "/static/"
-STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
 # STATIC_ROOT = os.path.join(BASE_DIR, "static")
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
-
-# Allow Cors Origin
 CORS_ORIGIN_WHITELIST = [
     "http://localhost:8080",
     "http://127.0.0.1:9000",
     "http://localhost:63342",
 ]
-
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
@@ -183,42 +147,10 @@ REST_FRAMEWORK = {
 
 WEBPACK_LOADER = {
     "DEFAULT": {
-        "BUNDLE_DIR_NAME": "dist/",
+        "CACHE": not DEBUG,
+        "BUNDLE_DIR_NAME": "static/dist/",
         "STATS_FILE": os.path.join(BASE_DIR, "frontend", "webpack-stats.json"),
+        "POLL_INTERVAL": 0.1,
+        "TIMEOUT": None,
     }
 }
-
-# DEPLOYMENT
-if not DEBUG:
-    # ALLOWED_HOSTS = ["django-gamification.herokuapp.com"]
-    #
-    # SESSION_COOKIE_SECURE = True
-    # SECURE_BROWSER_XSS_FILTER = True
-    # SECURE_CONTENT_TYPE_NOSNIFF = True
-    # SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-    # SECURE_HSTS_SECONDS = 315336000
-    # SECURE_REDIRECT_EXEMPT = []
-    #
-    # SECURE_SSL_REDIRECT = True
-    # SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
-
-    AWS_ACCESS_KEY_ID = env("AWS_ACCESS_KEY_ID")
-    AWS_SECRET_ACCESS_KEY = env("AWS_SECRET_ACCESS_KEY")
-    AWS_STORAGE_BUCKET_NAME = env("AWS_STORAGE_BUCKET_NAME")
-
-    AWS_DEFAULT_ACL = None
-    AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
-    AWS_S3_OBJECT_PARAMETERS = {"CacheControl": "max-age=86400"}
-
-    # s3 static settings
-
-    STATIC_LOCATION = "static"
-    STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/{STATIC_LOCATION}/"
-    STATICFILES_STORAGE = "portal.storage_backends.StaticStorage"
-
-    # s3 public media settings
-
-    PUBLIC_MEDIA_LOCATION = "media"
-    MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/{PUBLIC_MEDIA_LOCATION}/"
-    DEFAULT_FILE_STORAGE = "portal.storage_backends.PublicMediaStorage"
-

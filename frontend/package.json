@@ -3,12 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "start": "set HOT_RELOAD=1 webpack-dev-server --mode development",
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build": "set NODE_OPTIONS=--openssl-legacy-provider && set NODE_ENV=production webpack --mode production && vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "axios": "^0.21.1",
+    "axios": "^1.6.8",
     "chart.js": "^3.6.0",
     "core-js": "^3.6.5",
     "countup.js": "^2.0.7",
@@ -26,11 +27,11 @@
     "vuex": "^3.6.2"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^4.5.0",
-    "@vue/cli-plugin-eslint": "^4.5.0",
-    "@vue/cli-service": "^4.5.0",
-    "babel-eslint": "^10.1.0",
-    "eslint": "^6.7.2",
+    "@babel/eslint-parser": "^7.15.8",
+    "@vue/cli-plugin-babel": "^5.0.8",
+    "@vue/cli-plugin-eslint": "^5.0.8",
+    "@vue/cli-service": "^5.0.8",
+    "eslint": "^7.32.0",
     "eslint-plugin-vue": "^6.2.2",
     "vue-template-compiler": "^2.6.11",
     "webpack-bundle-tracker": "^0.4.3"
@@ -45,7 +46,7 @@
       "eslint:recommended"
     ],
     "parserOptions": {
-      "parser": "babel-eslint"
+      "parser": "@babel/eslint-parser"
     },
     "rules": {}
   },

@@ -105,10 +105,6 @@ This Project is a simulation of work environment, where more traditional agile t
 
 ### App Testing:
 
-##### Travis CI: [![Build Status](https://travis-ci.com/LukaszMalucha/Project-Dashboard-with-Django.svg?branch=master)](https://travis-ci.com/LukaszMalucha/Project-Dashboard-with-Django)
-##### `/api/tests/`
-##### `/core/tests/` 
-##### `/user/tests/`
 
 -----------------
 
@@ -134,7 +130,7 @@ django.test | coverage
 
 Thank you,
 
-Lukasz Malucha 
+Kevin Kareithi
 
 
 
