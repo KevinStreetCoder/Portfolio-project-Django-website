@@ -17,10 +17,10 @@ urlpatterns += [
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += [
-     path('admin/', admin.site.urls),
+     
       path('password-reset/confirm/<str:uidb64>/<str:token>',
               TemplateView.as_view(template_name="password_reset_confirm.html"), name='password_reset_confirm'),
-      
+      path('admin/', admin.site.urls),
       path('accounts/', include('allauth.urls')),
       path('auth/', include('dj_rest_auth.urls')),
       path('auth/registration/', include('dj_rest_auth.registration.urls')),
