@@ -1,13 +1,5 @@
 # PROJECT MANAGEMENT DASHBOARD 
 
-#### [Visit App on Heroku](https://django-gamification.herokuapp.com/)
-
-<br>
-
-![1](https://user-images.githubusercontent.com/26208598/54495673-ecd70e80-48dd-11e9-81b4-7c8634ed8a6a.JPG)
-
-#### TL:DR:
-
 Project management Dashboard made with Django REST and Vue.js.
 
 Explore & Enjoy!
