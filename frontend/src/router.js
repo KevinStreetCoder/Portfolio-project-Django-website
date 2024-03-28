@@ -103,9 +103,9 @@ export default new Router({
       props: true
     },
     {
-      path: "/admin", // Update path to match Django admin URL
+      path: "/admin", 
       beforeEnter() {
-        window.location.href = "/admin"; // Redirect to Django admin URL
+        window.open('/admin/', '_blank')
       },
     },
     {
